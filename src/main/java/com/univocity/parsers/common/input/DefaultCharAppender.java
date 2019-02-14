@@ -27,7 +27,7 @@ public class DefaultCharAppender implements CharAppender {
 	int index;
 	final String emptyValue; // default value to return when no characters have been accumulated
 	int whitespaceCount;
-	boolean truncateBeyondMaxLength = false;
+	boolean truncateBeyondMaxLength = true;
 
 	/**
 	 * Creates a DefaultCharAppender with a maximum limit of characters to append and the default value to return when no characters have been accumulated.
@@ -299,7 +299,7 @@ public class DefaultCharAppender implements CharAppender {
 	}
 
 	public char appendUntil(char ch, CharInput input, char stop) {
-		for (; ch != stop; ch = input.nextChar()) {
+		for (; ch != stop && (!truncateBeyondMaxLength || ((truncateBeyondMaxLength && index < chars.length))); ch = input.nextChar()) {
 			chars[index++] = ch;
 		}
 		return ch;
@@ -313,7 +313,7 @@ public class DefaultCharAppender implements CharAppender {
 	}
 
 	public char appendUntil(char ch, CharInput input, char stop1, char stop2, char stop3) {
-		for (; ch != stop1 && ch != stop2 && ch != stop3; ch = input.nextChar()) {
+		for (; ch != stop1 && ch != stop2 && ch != stop3 && (!truncateBeyondMaxLength || ((truncateBeyondMaxLength && index < chars.length))); ch = input.nextChar()) {
 			chars[index++] = ch;
 		}
 		return ch;
