@@ -27,7 +27,7 @@ public class DefaultCharAppender implements CharAppender {
 	int index;
 	final String emptyValue; // default value to return when no characters have been accumulated
 	int whitespaceCount;
-	boolean truncateBeyondMaxLength = false;
+	boolean truncateBeyondMaxLength = true;
 
 	/**
 	 * Creates a DefaultCharAppender with a maximum limit of characters to append and the default value to return when no characters have been accumulated.
