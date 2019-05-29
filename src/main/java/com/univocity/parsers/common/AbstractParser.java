@@ -551,6 +551,9 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 	}
 
 	protected boolean inComment() {
+		if(settings.isIgnoreComments()){
+			return false;
+		}
 		return ch == comment;
 	}
 
