@@ -63,6 +63,18 @@ public class DefaultCharAppender implements CharAppender {
 		this(maxLength, emptyValue, whitespaceRangeStart);
 		this.truncateBeyondMaxLength = truncateBeyondMaxLength;
 	}
+	
+	private boolean canAdd(int size){
+		boolean result = false;
+		if(!truncateBeyondMaxLength || (truncateBeyondMaxLength && ((index + size) < (chars.length)))){
+			result = true;
+		}
+		return result;
+	}
+	
+	private boolean canAdd(){
+		return canAdd(0);
+	}
 
 	@Override
 	public void appendIgnoringPadding(char ch, char padding) {
@@ -139,7 +151,9 @@ public class DefaultCharAppender implements CharAppender {
 
 	@Override
 	public void append(char ch) {
-		chars[index++] = ch;
+		if(canAdd()){
+			chars[index++] = ch;
+		}
 	}
 
 	@Override
@@ -299,22 +313,28 @@ public class DefaultCharAppender implements CharAppender {
 	}
 
 	public char appendUntil(char ch, CharInput input, char stop) {
-		for (; ch != stop && (!truncateBeyondMaxLength || ((truncateBeyondMaxLength && index < chars.length))); ch = input.nextChar()) {
-			chars[index++] = ch;
+		for (; ch != stop; ch = input.nextChar()) {
+			if(canAdd()){
+				chars[index++] = ch;
+			}
 		}
 		return ch;
 	}
 
 	public char appendUntil(char ch, CharInput input, char stop1, char stop2) {
-		for (; ch != stop1 && ch != stop2 && (!truncateBeyondMaxLength || ((truncateBeyondMaxLength && index < chars.length))); ch = input.nextChar()) {
-			chars[index++] = ch;
+		for (; ch != stop1 && ch != stop2; ch = input.nextChar()) {
+			if(canAdd()) {
+				chars[index++] = ch;
+			}
 		}
 		return ch;
 	}
 
 	public char appendUntil(char ch, CharInput input, char stop1, char stop2, char stop3) {
-		for (; ch != stop1 && ch != stop2 && ch != stop3 && (!truncateBeyondMaxLength || ((truncateBeyondMaxLength && index < chars.length))); ch = input.nextChar()) {
-			chars[index++] = ch;
+		for (; ch != stop1 && ch != stop2 && ch != stop3; ch = input.nextChar()) {
+			if(canAdd()) {
+				chars[index++] = ch;
+			}
 		}
 		return ch;
 	}
@@ -331,8 +351,8 @@ public class DefaultCharAppender implements CharAppender {
 	}
 
 	public void append(String string, int from, int to) {
-		string.getChars(from, to, chars, index);
-		index += to - from;
+			string.getChars(from, to, chars, index);
+			index += to - from;
 	}
 
 	@Override

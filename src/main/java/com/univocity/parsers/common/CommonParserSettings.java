@@ -64,6 +64,8 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	private boolean lineSeparatorDetectionEnabled = false;
 	private long numberOfRowsToSkip = 0L;
 	private boolean commentCollectionEnabled = false;
+	private boolean ignoreComments = true;
+
 
 	/**
 	 * Indicates whether or not a separate thread will be used to read characters from the input while parsing (defaults true if the number of available
@@ -465,5 +467,9 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 		processor = null;
 		numberOfRecordsToRead = -1L;
 		numberOfRowsToSkip = 0L;
+	}
+
+	public boolean isIgnoreComments() {
+		return ignoreComments;
 	}
 }
